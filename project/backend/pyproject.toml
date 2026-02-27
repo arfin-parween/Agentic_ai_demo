@@ -1,0 +1,23 @@
+[project]
+name = "safespace-ai-therapist"
+version = "0.1.0"
+description = "Mental health AI demo with FastAPI + LangGraph tools"
+readme = "README.md"
+requires-python = ">=3.10"
+
+dependencies = [
+  "fastapi>=0.115.0",
+  "uvicorn[standard]>=0.30.6",
+  "python-dotenv>=1.0.1",
+  "langchain>=0.2.16",
+  "langgraph>=0.2.35",
+  "langchain-openai>=0.1.23",
+  "pydantic>=2.9.2",
+  "twilio>=9.2.3",
+  "ollama>=0.3.1",
+]
+
+[dependency-groups]
+dev = [
+  "ruff>=0.6.0",
+]

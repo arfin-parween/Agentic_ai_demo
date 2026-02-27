@@ -1,0 +1,13 @@
+:root { font-family: Arial, sans-serif; }
+.page { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 24px; }
+.card { width: 900px; max-width: 95vw; background: #fff; border: 1px solid #ddd; border-radius: 12px; padding: 18px; }
+.muted { color: #666; margin-top: 6px; }
+.textarea { width: 100%; margin-top: 12px; padding: 10px; border-radius: 10px; border: 1px solid #ccc; font-size: 14px; }
+.row { display: flex; gap: 10px; margin-top: 12px; }
+.btn { padding: 10px 14px; border-radius: 10px; border: 1px solid #111; background: #111; color: #fff; cursor: pointer; }
+.btn.secondary { background: #fff; color: #111; }
+.btn:disabled { opacity: 0.6; cursor: not-allowed; }
+.result { margin-top: 16px; padding: 12px; border-radius: 10px; background: #f7f7f7; border: 1px solid #e0e0e0; }
+.hr { height: 1px; background: #e0e0e0; margin: 10px 0; }
+.response { white-space: pre-wrap; line-height: 1.5; }
+.error { margin-top: 12px; color: #b00020; }
