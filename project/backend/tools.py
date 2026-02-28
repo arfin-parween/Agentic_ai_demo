@@ -1,5 +1,15 @@
 import os
+from config import (
+    DEMO_MODE as CONFIG_DEMO_MODE,
+    TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN,
+    TWILIO_FROM_NUMBER,
+    EMERGENCY_CONTACT,
+    TWILIO_ENABLE_CALL,
+)
 
+# Ensure DEMO_MODE is always defined in this file
+DEMO_MODE = os.getenv("DEMO_MODE", str(CONFIG_DEMO_MODE)).lower() == "true"
 # Optional: Ollama tool (local)
 try:
     import ollama
@@ -78,6 +88,8 @@ def call_emergency() -> str:
     - Do NOT show technical IDs (Call SID) to the user.
     - Return a supportive safety message.
     """
+    DEMO_MODE = os.getenv("DEMO_MODE", str(CONFIG_DEMO_MODE)).lower() == "true"
+
     # Always safe in demo mode
     if DEMO_MODE or not TWILIO_ENABLE_CALL:
         return (
