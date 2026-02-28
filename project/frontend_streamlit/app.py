@@ -2,7 +2,7 @@ import os
 import requests
 import streamlit as st
 
-st.set_page_config(page_title="SafeSpace AI Therapist (Demo)", page_icon="🧠")
+st.set_page_config(page_title="Arfin AI Therapist (Demo)", page_icon="🧠")
 
 BACKEND_URL = os.getenv("BACKEND_URL", "https://agentic-ai-demo-1.onrender.com")  # change if needed
 
