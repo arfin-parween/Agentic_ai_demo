@@ -73,38 +73,53 @@ def call_emergency() -> str:
     Demo-safe emergency call tool.
     - Default: SIMULATES call (no real call)
     - If TWILIO_ENABLE_CALL=true and Twilio creds exist: places a real call
+
+    IMPORTANT:
+    - Do NOT show technical IDs (Call SID) to the user.
+    - Return a supportive safety message.
     """
-    demo_mode = os.getenv("DEMO_MODE", "true").lower() == "true"
-    twilio_enable_call = os.getenv("TWILIO_ENABLE_CALL", "false").lower() == "true"
-
-    twilio_sid = os.getenv("TWILIO_ACCOUNT_SID", "").strip()
-    twilio_token = os.getenv("TWILIO_AUTH_TOKEN", "").strip()
-    twilio_from = os.getenv("TWILIO_FROM_NUMBER", "").strip()
-    emergency_to = os.getenv("EMERGENCY_CONTACT", "").strip()
-
     # Always safe in demo mode
-    if demo_mode or not twilio_enable_call:
+    if DEMO_MODE or not TWILIO_ENABLE_CALL:
         return (
-            "✅ Demo: Emergency call triggered (simulation). "
-            "In real deployment, this would place a call to the configured emergency contact."
+            "I’m really glad you told me. You don’t have to face this alone.\n\n"
+            "✅ Demo: I’ve triggered the emergency-support action (simulation).\n"
+            "If you are in immediate danger, please call your local emergency number right now.\n\n"
+            "Are you safe at this moment? (Yes/No)"
         )
 
     # Real call path (only when explicitly enabled)
-    if not (twilio_sid and twilio_token and twilio_from and emergency_to):
+    if not (TWILIO_ACCOUNT_SID and TWILIO_AUTH_TOKEN and TWILIO_FROM_NUMBER and EMERGENCY_CONTACT):
         return (
-            "⚠️ Twilio call is enabled but configuration is incomplete. "
-            "Please set TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, TWILIO_FROM_NUMBER, EMERGENCY_CONTACT."
+            "I’m here with you. I tried to trigger the emergency call, but the setup is incomplete.\n\n"
+            "If you’re in danger right now, please call your local emergency number immediately.\n"
+            "Are you safe at this moment? (Yes/No)"
         )
 
     try:
         from twilio.rest import Client
-        client = Client(twilio_sid, twilio_token)
 
+        client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
         call = client.calls.create(
-            to=emergency_to,
-            from_=twilio_from,
+            to=EMERGENCY_CONTACT,
+            from_=TWILIO_FROM_NUMBER,
             url="http://demo.twilio.com/docs/voice.xml",
         )
-        return f"📞 Emergency call placed successfully. Call SID: {call.sid}"
+
+        # Log technical details only (Render logs / terminal)
+        print(f"✅ Twilio call placed. SID={call.sid}")
+
+        # User-facing message (supportive, no SID)
+        return (
+            "I’m really sorry you’re feeling this way — and I’m glad you said it out loud.\n\n"
+            "📞 I’ve triggered an emergency call to your configured contact.\n"
+            "If you are in immediate danger, please call your local emergency number right now.\n\n"
+            "Are you safe at this moment? (Yes/No)"
+        )
+
     except Exception as e:
-        return f"❌ Failed to place call via Twilio: {e}"
+        print("❌ Twilio call failed:", repr(e))
+        return (
+            "I’m here with you. I tried to place the emergency call, but it didn’t go through.\n\n"
+            "If you’re in immediate danger, please call your local emergency number right now.\n"
+            "Are you safe at this moment? (Yes/No)"
+        )
